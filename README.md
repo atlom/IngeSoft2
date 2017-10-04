@@ -1,7 +1,7 @@
 # IngeSoft2
 Integrantes:
 -Juan Acuña
--Moises Davalos
+-Moises Avalos
 -Joel Garcete
 -Jorge Lezcano
 
