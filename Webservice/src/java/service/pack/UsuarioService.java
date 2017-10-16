@@ -23,11 +23,10 @@ public class UsuarioService {
         conex = null;
     }
 
-    //======================Querrys para Usuario================================
+    //======================Querry para Usuario================================
     void addUsuario(Usuario u) throws SQLException, ClassNotFoundException {
         String sql="insert into \"Usuarios\" (nombre,correo) values(?,?)";
-        conex = con.conectarBD();
-            
+        conex = con.conectarBD();       
         PreparedStatement pst=conex.prepareStatement(sql);
         pst.setString(1,u.getNombre());
         pst.setString(2,u.getCorreo());   
@@ -36,7 +35,6 @@ public class UsuarioService {
         conex.close();
         con.cerrarBD();    
     }
-    //==========================================================================
     
     public void deleteUser(int id) throws ClassNotFoundException, SQLException {
         String sql="delete from \"Usuarios\" where id = ?";
@@ -49,7 +47,6 @@ public class UsuarioService {
         conex.close();
         con.cerrarBD();
     }
-    //==========================================================================
     
     public void editUser(int id, Usuario user) throws SQLException, ClassNotFoundException {
         String sql = "update \"Usuarios\" set nombre = ?, correo = ? where id = ?";
@@ -64,7 +61,6 @@ public class UsuarioService {
         conex.close();
         con.cerrarBD();
     }
-    //==========================================================================
     
     public ArrayList<Usuario> getUsers() throws SQLException, ClassNotFoundException {
         ArrayList<Usuario> lista = new ArrayList();

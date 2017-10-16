@@ -33,4 +33,16 @@ public class UsuarioResource {
         return uservice.getUsers();
     }
     
+    @POST
+    @Path("/adduser")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces("text/plain")
+    public String addUser(Usuario u) throws SQLException, ClassNotFoundException {
+        Usuario usuario = new Usuario();
+        usuario.setNombre(u.getNombre());
+        usuario.setCorreo(u.getCorreo());
+        uservice.addUsuario(usuario);
+        String result = "Usuario guardado: " + usuario.getNombre()+", "+usuario.getCorreo();
+        return result;
+    }
 }
