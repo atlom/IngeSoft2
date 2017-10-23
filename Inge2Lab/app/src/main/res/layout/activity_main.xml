@@ -11,6 +11,7 @@
         android:layout_height="324dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
+        android:background="@drawable/agp"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="27dp">
 
@@ -45,6 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="sign out" />
+            
 
             <Button
                 android:id="@+id/disconnect_button"
