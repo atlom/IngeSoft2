@@ -11,7 +11,12 @@
         android:layout_height="324dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
+<<<<<<< HEAD:Inge2Lab/app/src/main/res/layout/activity_signin.xml
         tools:layout_editor_absoluteX="6dp"
+=======
+        android:background="@drawable/agp"
+        tools:layout_editor_absoluteX="8dp"
+>>>>>>> 38f5abde656f06b31cd27d58edbacc341b2736b6:Inge2Lab/app/src/main/res/layout/activity_main.xml
         tools:layout_editor_absoluteY="27dp">
 
         <com.google.android.gms.common.SignInButton
@@ -44,8 +49,13 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+<<<<<<< HEAD:Inge2Lab/app/src/main/res/layout/activity_signin.xml
                 android:text="@string/sign_out"
                 tools:ignore="ButtonStyle" />
+=======
+                android:text="sign out" />
+            
+>>>>>>> 38f5abde656f06b31cd27d58edbacc341b2736b6:Inge2Lab/app/src/main/res/layout/activity_main.xml
 
             <Button
                 android:id="@+id/disconnect_button"
