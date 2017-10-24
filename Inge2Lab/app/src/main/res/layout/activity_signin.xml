@@ -6,38 +6,28 @@
     android:layout_height="match_parent"
     tools:context="com.example.atlom.inge2lab.SignInActivity">
 
-    <LinearLayout
-        android:layout_width="374dp"
-        android:layout_height="324dp"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-<<<<<<< HEAD:Inge2Lab/app/src/main/res/layout/activity_signin.xml
-        tools:layout_editor_absoluteX="6dp"
-=======
-        android:background="@drawable/agp"
-        tools:layout_editor_absoluteX="8dp"
->>>>>>> 38f5abde656f06b31cd27d58edbacc341b2736b6:Inge2Lab/app/src/main/res/layout/activity_main.xml
-        tools:layout_editor_absoluteY="27dp">
-
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/sign_in_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="0dp" />
-        <TextView
+    <TextView
             android:id="@+id/status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/signed_out"
             android:textColor="@android:color/black"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            tools:layout_editor_absoluteY="127dp"
+            tools:layout_editor_absoluteX="159dp" />
+
+    <LinearLayout
+        android:layout_width="367dp"
+        android:layout_height="53dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="187dp">
 
         <LinearLayout
             android:id="@+id/sign_out_and_disconnect"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="horizontal"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
@@ -49,13 +39,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-<<<<<<< HEAD:Inge2Lab/app/src/main/res/layout/activity_signin.xml
-                android:text="@string/sign_out"
-                tools:ignore="ButtonStyle" />
-=======
-                android:text="sign out" />
-            
->>>>>>> 38f5abde656f06b31cd27d58edbacc341b2736b6:Inge2Lab/app/src/main/res/layout/activity_main.xml
+                android:text="@string/sign_out" />
 
             <Button
                 android:id="@+id/disconnect_button"
@@ -63,10 +47,18 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/disconnect"
-                tools:ignore="ButtonStyle"/>
+                tools:ignore="ButtonStyle" />
         </LinearLayout>
-
-
     </LinearLayout>
 
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="137dp"
+        tools:layout_editor_absoluteY="46dp" />
+
+
 </android.support.constraint.ConstraintLayout>
+
+

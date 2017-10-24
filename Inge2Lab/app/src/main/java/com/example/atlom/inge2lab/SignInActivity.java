@@ -28,7 +28,7 @@ public class SignInActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener{
 
-    private ServiceHelper sc = new ServiceHelper();
+
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
 
@@ -69,23 +69,16 @@ public class SignInActivity extends AppCompatActivity implements
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            try {
-                handleSignInResult(result);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            handleSignInResult(result);
         }
     }
 
-    private void handleSignInResult(GoogleSignInResult result) throws IOException, JSONException {
+    private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         String test;
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
-            sc.validar_usuario("http://localhost:8084/Webservice/webresources/usuario/isuser",acct);
             mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName() + '\n' + acct.getEmail()));
             updateUI(true);
         } else {
