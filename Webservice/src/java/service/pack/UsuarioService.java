@@ -130,4 +130,41 @@ public class UsuarioService {
         conex.close();
         con.cerrarBD();    
     }
+    
+    public ArrayList<Hijo> getChild(int userId) throws SQLException, ClassNotFoundException {
+        ArrayList<Hijo> lista = new ArrayList();
+        conex = con.conectarBD();
+        Statement st = conex.createStatement();
+        String sql = "select nombre,apellido,fecha_nacimiento::varchar fecha,"
+                   + "lugar_nacimiento, id_hijo::varchar id_hijo, barrio, responsable,"
+                   + "sexo, direccion, nacionalidad, departamento, municipio, "
+                   + "referencia_domicilio, responsable, referencia_domicilio, "
+                   + "telefono_contacto, seguro_medico, alergia "
+                   + "from \"Hijos\" "
+                   + "where id_usuario = "+userId;
+        ResultSet rs = st.executeQuery(sql);
+        while (rs.next()) {
+            Hijo temp = new Hijo();
+            temp.setId(rs.getString("id_hijo"));
+            temp.setNombre(rs.getString("nombre"));
+            temp.setApellido(rs.getString("apellido"));
+            temp.setSexo(rs.getString("sexo"));
+            temp.setFechaNacimiento(rs.getString("fecha"));
+            temp.setLugarNacimiento(rs.getString("lugar_nacimiento"));
+            temp.setDireccion(rs.getString("direccion"));
+            temp.setNacionalidad(rs.getString("nacionalidad"));
+            temp.setMunicipio(rs.getString("municipio"));
+            temp.setDepartamento(rs.getString("departamento"));
+            temp.setBarrio(rs.getString("barrio"));
+            temp.setReferenciaDomicilio(rs.getString("referencia_domicilio"));
+            temp.setResponsable(rs.getString("responsable"));
+            temp.setTelefonoContacto(rs.getString("telefono_contacto"));
+            temp.setSeguroMedico(rs.getString("seguro_medico"));
+            temp.setAlergia(rs.getString("alergia"));
+            lista.add(temp);
+        }
+        conex.close();
+        con.cerrarBD();
+        return lista;
+    }
 }

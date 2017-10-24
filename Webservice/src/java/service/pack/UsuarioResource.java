@@ -101,4 +101,15 @@ public class UsuarioResource {
         uservice.addHijo(id, h);
         return "Nuevo hijo creado";
     }
+    
+    @POST
+    @Path("/getchilds")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public ArrayList<Hijo> getChilds(Usuario u) throws ClassNotFoundException, SQLException {
+        Usuario user = new Usuario();
+        ArrayList<Hijo> hijos = new ArrayList();
+        hijos = uservice.getChild(u.getId_usuario());
+        return hijos;
+    }
 }
