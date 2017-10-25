@@ -2,9 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-<<<<<<< HEAD
-        <group/>
-=======
         <group>
             <file>file:/home/atlom/Escritorio/git/IngeSoft2/Webservice/src/java/service/pack/Conexion.java</file>
             <file>file:/home/atlom/Escritorio/git/IngeSoft2/Webservice/src/java/service/pack/UsuarioResource.java</file>
@@ -13,6 +10,5 @@
             <file>file:/home/atlom/Escritorio/git/IngeSoft2/Webservice/src/java/service/pack/Usuario.java</file>
             <file>file:/home/atlom/Escritorio/git/IngeSoft2/Webservice/src/java/service/pack/UsuarioService.java</file>
         </group>
->>>>>>> fa587b94481a9aa65c3202235a45c346522235b8
     </open-files>
 </project-private>

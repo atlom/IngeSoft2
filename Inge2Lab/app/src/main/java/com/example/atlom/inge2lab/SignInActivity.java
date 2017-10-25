@@ -1,6 +1,8 @@
 package com.example.atlom.inge2lab;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ServiceCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.google.android.gms.auth.api.Auth;
@@ -19,15 +22,12 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.common.api.ResultCallback;
 
-import org.json.JSONException;
 
-import java.io.IOException;
-
-
-public class SignInActivity extends AppCompatActivity implements
-        GoogleApiClient.OnConnectionFailedListener,
+public class SignInActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener{
 
+
+    private Service service = new Service();
 
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
@@ -41,6 +41,10 @@ public class SignInActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
+
+        //Cambia la politicas para evitar errores de red
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
         mStatusTextView = (TextView) findViewById(R.id.status);
         findViewById(R.id.sign_in_button).setOnClickListener(this);
@@ -75,12 +79,19 @@ public class SignInActivity extends AppCompatActivity implements
 
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
-        String test;
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
-            mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName() + '\n' + acct.getEmail()));
-            updateUI(true);
+            if (service.validar_usuario("usuario/isuser",acct)){
+                mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName() + '\n' + acct.getEmail()));
+                updateUI(true);
+            }else{
+                Context context = getApplicationContext();
+                CharSequence text = "Usuario no registrado";
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+            }
         } else {
             // Signed out, show unauthenticated UI.
             updateUI(false);

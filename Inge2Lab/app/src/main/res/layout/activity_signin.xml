@@ -1,33 +1,39 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:id="@+id/main_layout"
     android:layout_height="match_parent"
-    tools:context="com.example.atlom.inge2lab.SignInActivity">
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    tools:context=".SignInActivity">
 
-    <TextView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
             android:id="@+id/status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/signed_out"
             android:textColor="@android:color/black"
-            android:textSize="14sp"
-            tools:layout_editor_absoluteY="127dp"
-            tools:layout_editor_absoluteX="159dp" />
+            android:textSize="14sp" />
 
-    <LinearLayout
-        android:layout_width="367dp"
-        android:layout_height="53dp"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="187dp">
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            tools:visibility="gone">
+        </com.google.android.gms.common.SignInButton>
 
         <LinearLayout
             android:id="@+id/sign_out_and_disconnect"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:orientation="horizontal"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
@@ -39,26 +45,17 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/sign_out" />
+                android:text="@string/sign_out"></Button>
 
             <Button
                 android:id="@+id/disconnect_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/disconnect"
-                tools:ignore="ButtonStyle" />
+                android:text="@string/disconnect"></Button>
         </LinearLayout>
+
     </LinearLayout>
 
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/sign_in_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="137dp"
-        tools:layout_editor_absoluteY="46dp" />
 
-
-</android.support.constraint.ConstraintLayout>
-
-
+</LinearLayout>
