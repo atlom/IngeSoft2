@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">Inge2Lab</string>
+    <string name="app_name">Agenda</string>
     <string name="signed_in_fmt">Signed in as: %s</string>
     <string name="signed_in">Signed in</string>
-    <string name="sign_out">Sign Out</string>
+    <string name="next_button">Next</string>
     <string name="signed_out">Signed out</string>
     <string name="disconnect">Disconnect</string>
 </resources>

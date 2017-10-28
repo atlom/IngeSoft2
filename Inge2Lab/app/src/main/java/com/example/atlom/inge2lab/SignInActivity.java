@@ -1,10 +1,12 @@
 package com.example.atlom.inge2lab;
 
-import android.content.Context;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ServiceCompat;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -19,24 +21,40 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.common.api.ResultCallback;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 
 
 public class SignInActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener{
 
-
-    private Service service = new Service();
+    private String host = "http://192.168.43.2:8084/Webservice/webresources/usuario/isuser";
 
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
 
     private GoogleApiClient mGoogleApiClient;
     private TextView mStatusTextView;
+    private ProgressDialog mProgressDialog;
+
+
+    private String correo;
 
 
 
+
+    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -48,8 +66,9 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 
         mStatusTextView = (TextView) findViewById(R.id.status);
         findViewById(R.id.sign_in_button).setOnClickListener(this);
-        findViewById(R.id.sign_out_button).setOnClickListener(this);
+        findViewById(R.id.next_button).setOnClickListener(this);
         findViewById(R.id.disconnect_button).setOnClickListener(this);
+
 
 
         // Configure sign-in to request the user's ID, email address, and basic
@@ -67,6 +86,31 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
+        if (opr.isDone()) {
+            // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
+            // and the GoogleSignInResult will be available instantly.
+            Log.d(TAG, "Got cached sign-in");
+            GoogleSignInResult result = opr.get();
+            handleSignInResult(result);
+        } else {
+            // If the user has not previously signed in on this device or the sign-in has expired,
+            // this asynchronous branch will attempt to sign in the user silently.  Cross-device
+            // single sign-on will occur in this branch.
+            showProgressDialog();
+            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
+                @Override
+                public void onResult(@NonNull GoogleSignInResult googleSignInResult) {
+                    hideProgressDialog();
+                    handleSignInResult(googleSignInResult);
+                }
+            });
+        }
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -79,19 +123,13 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
-        if (result.isSuccess()) {
+        if (result.isSuccess()){
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
-            if (service.validar_usuario("usuario/isuser",acct)){
-                mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName() + '\n' + acct.getEmail()));
-                updateUI(true);
-            }else{
-                Context context = getApplicationContext();
-                CharSequence text = "Usuario no registrado";
-                int duration = Toast.LENGTH_SHORT;
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
-            }
+            mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName() + '\n' + acct.getEmail()));
+            correo = acct.getEmail();
+            updateUI(true);
+
         } else {
             // Signed out, show unauthenticated UI.
             updateUI(false);
@@ -101,12 +139,12 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     private void updateUI(boolean signedIn) {
         if (signedIn) {
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
-            findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
+            findViewById(R.id.next_and_disconnect).setVisibility(View.VISIBLE);
         } else {
             mStatusTextView.setText(R.string.signed_out);
 
             findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
-            findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
+            findViewById(R.id.next_and_disconnect).setVisibility(View.GONE);
         }
     }
 
@@ -117,8 +155,8 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                 signIn();
                 break;
 
-            case R.id.sign_out_button:
-                signOut();
+            case R.id.next_button:
+                next();
                 break;
 
             case R.id.disconnect_button:
@@ -132,14 +170,9 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    private void signOut() {
-        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status) {
-                        updateUI(false);
-                    }
-                });
+    private void next() {
+        AuthUserTask task = new AuthUserTask();
+        task.execute();
     }
 
     private void revokeAccess() {
@@ -159,6 +192,74 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         // An unresolvable error has occurred and Google APIs (including Sign-In) will not
         // be available.
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
+
+    }
+
+
+    private void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setMessage("Loading");
+            mProgressDialog.setIndeterminate(true);
+        }
+        mProgressDialog.show();
+    }
+
+    private void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.hide();
+        }
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
+    private class AuthUserTask extends AsyncTask<String,Integer,Boolean>{
+
+        private String id_usuario;
+        @Override
+        protected Boolean doInBackground(String... strings) {
+            boolean val = false;
+
+            try {
+                HttpClient client = new DefaultHttpClient();
+                HttpResponse response;
+
+                JSONObject parametros = new JSONObject();
+
+                parametros.put("correo",correo);
+
+                StringEntity jsonEntity = new StringEntity(parametros.toString());
+                HttpPost request = new HttpPost(host);
+                request.setHeader("Accept", "application/json");
+                request.addHeader("Content-Type","application/json");
+                request.setEntity(jsonEntity);
+                response = client.execute(request);
+                StatusLine statusLine = response.getStatusLine();
+                if (statusLine.getStatusCode() == HttpStatus.SC_OK){
+                    String parse = EntityUtils.toString(response.getEntity());
+                    JSONObject obj = new JSONObject(parse);
+                    id_usuario = obj.getString("id_usuario");
+                    val = true;
+                }
+
+            }catch (Exception E){
+                Log.e("Network","Error",E);
+            }
+            return val;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean val) {
+            if (val){
+                Intent intent = new Intent(SignInActivity.this,ChildActivity.class);
+                intent.putExtra("id_usuario", id_usuario);
+                startActivity(intent);
+            }else{
+                Toast toast = Toast.makeText(getApplicationContext(), "Correo no registrado", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        }
+
 
     }
 }
