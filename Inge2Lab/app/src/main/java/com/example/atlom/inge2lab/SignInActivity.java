@@ -39,7 +39,8 @@ import org.json.JSONObject;
 public class SignInActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener{
 
-    private String host = "http://192.168.43.2:8084/Webservice/webresources/usuario/isuser";
+    /*Cambiar el IP para que funcione,el app tiene que estar en la misma red*/
+    private String host = "http://192.168.0.22:8084/Webservice/webresources/usuario/isuser";
 
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
@@ -215,7 +216,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     private class AuthUserTask extends AsyncTask<String,Integer,Boolean>{
 
-        private String id_usuario;
+        private int id_usuario;
         @Override
         protected Boolean doInBackground(String... strings) {
             boolean val = false;
@@ -238,7 +239,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                 if (statusLine.getStatusCode() == HttpStatus.SC_OK){
                     String parse = EntityUtils.toString(response.getEntity());
                     JSONObject obj = new JSONObject(parse);
-                    id_usuario = obj.getString("id_usuario");
+                    id_usuario = obj.getInt("id_usuario");
                     val = true;
                 }
 

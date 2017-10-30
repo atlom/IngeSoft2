@@ -1,4 +1,7 @@
 package com.example.atlom.inge2lab.hijo;
+
+import android.database.Cursor;
+
 /**
  *
  * @author atlom
@@ -20,6 +23,7 @@ public class Hijo {
     String telefonoContacto;
     String seguroMedico;
     String alergia;
+    int avatar ;
     
     public Hijo() {
         id = "";
@@ -38,6 +42,7 @@ public class Hijo {
         telefonoContacto = "";
         seguroMedico = "";
         alergia = "";
+        avatar = 0;
     }
     
     public String getId() {
@@ -167,4 +172,13 @@ public class Hijo {
     public void setAlergia(String alergia) {
         this.alergia = alergia;
     }
+
+    public int getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(int avatar) {
+        this.avatar = avatar;
+    }
+
 }

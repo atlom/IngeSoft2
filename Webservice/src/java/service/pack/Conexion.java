@@ -25,7 +25,7 @@ public class Conexion {
         user = "postgres";
         pass = "postgres";
         host = "localhost:5432";
-        database = "Inge2Test";
+        database = "AgendaP";
     }
     
     public Connection conectarBD() throws ClassNotFoundException, SQLException {

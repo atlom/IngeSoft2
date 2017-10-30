@@ -2,6 +2,7 @@ package com.example.atlom.inge2lab.service;
 
 import android.util.Log;
 
+import com.example.atlom.inge2lab.R;
 import com.example.atlom.inge2lab.hijo.Hijo;
 
 import org.apache.http.HttpResponse;
@@ -21,19 +22,19 @@ import java.util.ArrayList;
 
 public class Service {
 
-    private String host = "http://10.13.15.215:8084/Webservice/webresources/usuario/";
+    private String host = "http://192.168.0.22:8084/Webservice/webresources/usuario/";
 
 
     private ArrayList<Hijo> hijoList = new ArrayList<>();
 
-    private void getChild(){
+    public ArrayList<Hijo> getChild(int id_usuario){
         try {
             HttpClient httpClient = new DefaultHttpClient();
             HttpPost del = new HttpPost(host+"getchilds");
             del.setHeader("Accept", "application/json");
             del.setHeader("Content-type", "application/json");
             JSONObject jsonParam = new JSONObject();
-            //jsonParam.put("id_usuario", id_usuario);
+            jsonParam.put("id_usuario", id_usuario);
             StringEntity se = new StringEntity(jsonParam.toString());
             del.setEntity(se);
             //
@@ -60,11 +61,17 @@ public class Service {
                 hijo.setAlergia(obj.getString("alergia"));
                 hijo.setNacionalidad(obj.getString("nacionalidad"));
                 hijo.setSexo(obj.getString("sexo"));
+                if(hijo.getSexo()=="M"){
+                    hijo.setAvatar(R.drawable.male);
+                }else{
+                    hijo.setAvatar(R.drawable.female);
+                }
                 hijoList.add(i, hijo);
             }
         } catch (Exception ex) {
             Log.e("ServicioRest", "Error!", ex);
         }
+        return hijoList;
     }
 
 }

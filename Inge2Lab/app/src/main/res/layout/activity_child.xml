@@ -6,4 +6,6 @@
     android:layout_height="match_parent"
     tools:context="com.example.atlom.inge2lab.ChildActivity">
 
+    <include layout="@layout/hijo_content" />
+
 </android.support.constraint.ConstraintLayout>
