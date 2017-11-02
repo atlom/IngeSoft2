@@ -112,4 +112,48 @@ public class UsuarioResource {
         hijos = uservice.getChild(u.getId_usuario());
         return hijos;
     }
+    
+    @POST
+    @Path("/getregistro")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public ArrayList<Registro> getRegistro(Usuario u) throws ClassNotFoundException, SQLException {
+        Usuario user = new Usuario();
+        ArrayList<Registro> registros = new ArrayList();
+        registros = uservice.getRegistros(u.getId_usuario());
+        return registros;
+    }
+    
+    @POST
+    @Path("/getregistroby")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public ArrayList<Registro> getRegistroBy(@QueryParam("estado") String e,Hijo h) throws ClassNotFoundException, SQLException {
+        ArrayList<Registro> registros = new ArrayList();
+        int id = Integer.parseInt(h.getId());
+        registros = uservice.byEstado(id, Integer.parseInt(e));
+        return registros;
+    }
+    
+    @POST
+    @Path("/getregistrobynombre")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public ArrayList<Registro> getRegistroByNombre(Hijo h) throws ClassNotFoundException, SQLException {
+        ArrayList<Registro> registros = new ArrayList();
+        int id = Integer.parseInt(h.getId());
+        registros = uservice.byNombre(id);
+        return registros;
+    }
+    
+    @POST
+    @Path("/getregistrobyfecha")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public ArrayList<Registro> getRegistroByFecha(Hijo h) throws ClassNotFoundException, SQLException {
+        ArrayList<Registro> registros = new ArrayList();
+        int id = Integer.parseInt(h.getId());
+        registros = uservice.byFecha(id);
+        return registros;
+    }
 }

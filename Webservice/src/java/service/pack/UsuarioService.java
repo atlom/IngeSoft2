@@ -167,4 +167,103 @@ public class UsuarioService {
         con.cerrarBD();
         return lista;
     }
+    public ArrayList<Registro> getRegistros(int userId) throws SQLException, ClassNotFoundException {
+        ArrayList<Registro> lista = new ArrayList();
+        conex = con.conectarBD();
+        Statement st = conex.createStatement();
+        String sql = "select rv.estado, coalesce(rv.fecha::varchar,'') fecha, v.nombre, "
+                   + "coalesce(rv.responsable,'') responsable, "
+                   + "v.id_vacuna, rv.id_hijo::varchar id_hijo, rv.dosis, rv.edad_meses, coalesce(rv.lote,'') lote "
+                   + "from \"RegistroVacuna\" rv "
+                   + "join \"Vacunas\" v on v.id_vacuna=rv.id_vacuna "
+                   + "join \"Hijos\" h on rv.id_hijo = h.id_hijo "
+                   + "where h.id_usuario = "+userId;
+        ResultSet rs = st.executeQuery(sql);
+        while (rs.next()) {
+            Registro tm = new Registro();
+            tm.setNombreVacuna(rs.getString("nombre"));
+            tm.setEstado(rs.getInt("estado"));
+            tm.setFecha(rs.getString("fecha"));
+            tm.setDosis(rs.getInt("dosis"));
+            tm.setEdad(rs.getInt("edad_meses"));
+            tm.setLote(rs.getString("lote"));
+            tm.setHijoId(rs.getString("id_hijo"));
+            tm.setVacunaId(rs.getInt("id_vacuna"));
+            tm.setResponsable(rs.getString("responsable"));
+            
+            lista.add(tm);
+        }
+        conex.close();
+        con.cerrarBD();
+        return lista;
+    }
+    
+    
+    /*Filtros para Hijo*/
+    //Por estado
+    public ArrayList<Registro> byEstado(int Idchild,int estado) throws SQLException, ClassNotFoundException{
+        ArrayList<Registro> lista = new ArrayList();
+        conex = con.conectarBD();
+        Statement st = conex.createStatement();
+        String sql ="select v.nombre, rv.fecha "
+                +"from \"RegistroVacuna\" rv "
+                +"join \"Vacunas\" v on v.id_vacuna=rv.id_vacuna "
+                +"where rv.id_hijo ="+Idchild
+                + " and rv.estado="+estado;
+        PreparedStatement pst=conex.prepareStatement(sql);
+        ResultSet rs = st.executeQuery(sql);
+        while (rs.next()){
+            Registro tm = new Registro();
+            tm.setNombreVacuna(rs.getString("nombre"));
+            tm.setFecha(rs.getString("fecha"));
+            lista.add(tm);
+        }
+        conex.close();
+        con.cerrarBD();
+        return lista;
+    }
+    
+    public ArrayList<Registro> byNombre(int Idchild) throws SQLException, ClassNotFoundException{
+        ArrayList<Registro> lista = new ArrayList();
+        conex = con.conectarBD();
+        Statement st = conex.createStatement();
+        String sql ="select v.nombre, rv.fecha "
+                +"from \"RegistroVacuna\" rv "
+                +"join \"Vacunas\" v on v.id_vacuna=rv.id_vacuna "
+                +"where rv.id_hijo ="+Idchild
+                +" order by v.nombre";
+        PreparedStatement pst=conex.prepareStatement(sql);
+        ResultSet rs = st.executeQuery(sql);
+        while (rs.next()){
+            Registro tm = new Registro();
+            tm.setNombreVacuna(rs.getString("nombre"));
+            tm.setFecha(rs.getString("fecha"));
+            lista.add(tm);
+        }
+        conex.close();
+        con.cerrarBD();
+        return lista;
+    }
+    
+    public ArrayList<Registro> byFecha(int Idchild) throws SQLException, ClassNotFoundException{
+        ArrayList<Registro> lista = new ArrayList();
+        conex = con.conectarBD();
+        Statement st = conex.createStatement();
+        String sql ="select v.nombre, rv.fecha "
+                +"from \"RegistroVacuna\" rv "
+                +"join \"Vacunas\" v on v.id_vacuna=rv.id_vacuna "
+                +"where rv.id_hijo ="+Idchild
+                +" order by rv.fecha";
+        PreparedStatement pst=conex.prepareStatement(sql);
+        ResultSet rs = st.executeQuery(sql);
+        while (rs.next()){
+            Registro tm = new Registro();
+            tm.setNombreVacuna(rs.getString("nombre"));
+            tm.setFecha(rs.getString("fecha"));
+            lista.add(tm);
+        }
+        conex.close();
+        con.cerrarBD();
+        return lista;
+    }
 }

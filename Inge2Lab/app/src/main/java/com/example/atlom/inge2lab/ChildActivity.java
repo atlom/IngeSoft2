@@ -22,8 +22,6 @@ public class ChildActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putInt("id_usuario",id_usuario);
 
-
-
         //HijoFragment
         HijoFragment fragment = (HijoFragment)
                 getSupportFragmentManager().findFragmentById(R.id.hijo_container);

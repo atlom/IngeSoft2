@@ -2,11 +2,13 @@ package com.example.atlom.inge2lab.hijo;
 
 import android.database.Cursor;
 
+import java.io.Serializable;
+
 /**
  *
  * @author atlom
  */
-public class Hijo {
+public class Hijo implements Serializable{
     String id;
     String nombre;
     String apellido;
@@ -26,7 +28,7 @@ public class Hijo {
     int avatar ;
     
     public Hijo() {
-        id = "";
+        id = " ";
         nombre = "";
         apellido = "";
         sexo = "";

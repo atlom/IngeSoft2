@@ -42,6 +42,8 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     /*Cambiar el IP para que funcione,el app tiene que estar en la misma red*/
     private String host = "http://192.168.0.22:8084/Webservice/webresources/usuario/isuser";
 
+    //private String host = "http://192.168.43.2:8084/Webservice/webresources/usuario/isuser";
+
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
 
@@ -260,7 +262,5 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                 toast.show();
             }
         }
-
-
     }
 }
